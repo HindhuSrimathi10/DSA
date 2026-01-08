@@ -18,7 +18,7 @@ class Solution:
         # inorder(root)
         # return result
 
-    # using stack
+    # using stack or iterative
         stack=[]
         curr=root
         while curr or len(stack)!=0:
