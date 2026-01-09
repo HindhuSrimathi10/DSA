@@ -1,30 +1,33 @@
 class Solution:
     def totalNQueens(self, n: int) -> int:
+        res = []
+        board = [ ['.' for j in range(n)] for i in range(n) ]
+        dig1 = set()
+        dig2 = set()
         cols = set()
-        posDiag = set()  # r + c
-        negDiag = set()  # r - c
-        count = 0
 
         def backtrack(r):
-            nonlocal count
-            if r == n:
-                count += 1
-                return
+            if r==n: # found solution
+                solution = []
+                for row in board:
+                    str_row = "".join(row)
+                    solution.append(str_row)
+                res.append(solution)
+                return 
 
             for c in range(n):
-                if c in cols or (r + c) in posDiag or (r - c) in negDiag:
+                if c in cols or (r+c) in dig1 or (r-c) in dig2 :
                     continue
 
                 cols.add(c)
-                posDiag.add(r + c)
-                negDiag.add(r - c)
-
-                backtrack(r + 1)
-
-                # backtrack
+                dig1.add(r+c)
+                dig2.add(r-c)
+                board[r][c] = "Q"
+                backtrack(r+1)
                 cols.remove(c)
-                posDiag.remove(r + c)
-                negDiag.remove(r - c)
+                dig1.remove(r+c)
+                dig2.remove(r-c)
+                board[r][c] = "."
 
         backtrack(0)
-        return count
+        return len(res)
